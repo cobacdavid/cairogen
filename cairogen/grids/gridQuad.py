@@ -86,7 +86,6 @@ class GridQuad:
             self.quads[nl - 1][c].l = nl - 1
             self.quads[nl - 1][c].c = c
 
-
     def __getitem__(self, indice):
         l = indice // self._nc
         c = indice % self._nc

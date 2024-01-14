@@ -1,14 +1,14 @@
 import cairo as _cairo
-from PIL import Image
+import math as _math
 import numpy as _np
+from PIL import Image
 
 
 def bg(img, color):
     ctx = _cairo.Context(img)
     ctx.save()
-    ctx.set_source_rgba(*color)
-    # ctx.rectangle(0, 0, img.get_width(), img.get_height())
-    # ctx.fill()
+    f_col = ctx.set_source_rgba if len(color) == 4 else ctx.set_source_rgb
+    f_col(*color)
     ctx.paint()
     ctx.restore()
 
@@ -90,6 +90,24 @@ def est_separe(p, q):
 
 def dist(A, B):
     return sum((b - a) ** 2 for a, b in zip(A, B)) ** .5
+
+
+def aire(tab_pts):
+    """https://fr.wikipedia.org/wiki/Aire_d%27un_polygone
+    """
+    # on ferme le chemin si ce n'est pas fait
+    x1, y1 = tab_pts[0]
+    x2, y2 = tab_pts[-1]
+    if not _math.isclose(x1, x2) or not _math.isclose(y1, y2):
+        pts += [tab_pts[0]]
+    #
+    n = len(tab_pts)
+    x = [tab_pts[i][0] for i in range(n)]
+    y = [tab_pts[i][1] for i in range(n)]
+    somme = 0
+    for i in range(n - 1):
+        somme += (x[i]*y[i+1] - x[i+1]*y[i])
+    return abs(.5 * somme)
 
 
 def midpoint(A, B):

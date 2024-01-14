@@ -10,7 +10,7 @@ class Poly:
         self._scale = 1
         self._rotate = 0
         self.visible = True
-        self._matrix = None
+        self._matrix = _cairo.Matrix()
         self._l = None
         self._c = None
 
@@ -82,7 +82,6 @@ class Poly:
 
     def _set_matrix(self):
         X, Y = self.center()
-        self._matrix = _cairo.Matrix()
         self._matrix.translate(X, Y)
         self._matrix.rotate(self._rotate)
         self._matrix.scale(self._scale, self._scale)

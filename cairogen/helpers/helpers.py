@@ -95,11 +95,12 @@ def dist(A, B):
 def aire(tab_pts):
     """https://fr.wikipedia.org/wiki/Aire_d%27un_polygone
     """
+    n = len(tab_pts)
     # on ferme le chemin si ce n'est pas fait
     x1, y1 = tab_pts[0]
     x2, y2 = tab_pts[-1]
     if not _math.isclose(x1, x2) or not _math.isclose(y1, y2):
-        pts += [tab_pts[0]]
+        tab_pts += [tab_pts[0]]
     #
     n = len(tab_pts)
     x = [tab_pts[i][0] for i in range(n)]
@@ -107,6 +108,10 @@ def aire(tab_pts):
     somme = 0
     for i in range(n - 1):
         somme += (x[i]*y[i+1] - x[i+1]*y[i])
+    # on enlève l'élément ajouté
+    if len(tab_pts) > n:
+        tab_pts.pop()
+    #
     return abs(.5 * somme)
 
 

@@ -28,8 +28,8 @@ class Segment:
         return pts
 
     def point(self, k):
-        return (k*self._ori[0] + (1-k)*self._ext[0],
-                k*self._ori[1] + (1-k)*self._ext[1])
+        return ((1-k)*self._ori[0] + k*self._ext[0],
+                (1-k)*self._ori[1] + k*self._ext[1])
 
     def slope(self):
         if self._ori[0] == self._ext[0]:

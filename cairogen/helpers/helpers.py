@@ -124,3 +124,21 @@ def image_noise(fichier, Wdest, Hdest):
     img = img.convert("L").resize((Wdest, Hdest))
     img.save("nb.jpg")
     return _np.array(img)
+
+
+def tab2bboxWH(tab_pts):
+    """ bbox, w, h"""
+    xmin = xmax = tab_pts[0][0]
+    ymin = ymax = tab_pts[0][1]
+    for i in range(1, len(tab_pts)):
+        pt = tab_pts[i]
+        xmin = min(xmin, pt[0])
+        xmax = max(xmax, pt[0])
+        ymin = min(ymin, pt[1])
+        ymax = max(ymax, pt[1])
+    return [xmin, ymin, xmax, ymax], xmax - xmin, ymax - ymin
+
+
+def bbox2rect(bbox):
+    xmin, ymin, xmax, ymax = bbox
+    return [(xmin, ymin), (xmax, ymin), (xmax, ymax), (xmin, ymax)]

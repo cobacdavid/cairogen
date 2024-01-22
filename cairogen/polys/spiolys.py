@@ -51,4 +51,3 @@ class Spiolys:
         #
         return (Spiolys(Poly(poly1), self._condPolys),
                 Spiolys(Poly(poly2), self._condPolys))
-        

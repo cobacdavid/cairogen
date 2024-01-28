@@ -10,7 +10,7 @@ class Poly:
         self._scale = 1
         self._rotate = 0
         self.visible = True
-        self._matrix = _cairo.Matrix()
+        self._matrix = None # _cairo.Matrix()
         self._l = None
         self._c = None
 
@@ -82,6 +82,8 @@ class Poly:
 
     def _set_matrix(self):
         X, Y = self.center()
+        if not self._matrix:
+            self._matrix = _cairo.Matrix()
         self._matrix.translate(X, Y)
         self._matrix.rotate(self._rotate)
         self._matrix.scale(self._scale, self._scale)
@@ -105,9 +107,9 @@ class Poly:
         return X, Y
 
     def _ext_fun(self, ctx, xy, f):
-        X, Y = xy
+        # X, Y = xy
         ctx.save()
-        ctx.translate(X, Y)
+        # ctx.translate(X, Y)
         f(ctx, self)
         ctx.restore()
 
@@ -115,14 +117,16 @@ class Poly:
              drawtype="stroke",
              f=None,
              unclip=False):
+        ctx.save()
         X, Y = self.center()
         M = _cairo.Matrix()
         M.translate(X, Y)
         M.rotate(self._rotate)
         M.scale(self._scale, self._scale)
         M.translate(-X, -Y)
-        self._matrix = M
-        ctx.transform(M)
+        if not self._matrix:
+            self._matrix = M
+        ctx.transform(self._matrix)
         ctx.move_to(*self._poly[0])
         for point in self._poly[1:]:
             ctx.line_to(*point)
@@ -155,8 +159,7 @@ class Poly:
             ctx.clip()
         if f is not None:
             self._ext_fun(ctx, (X, Y), f)
-        if not unclip:
-            ctx.reset_clip()
+        ctx.restore()
 
     def draw_segment(self, ctx, index):
         ctx.move_to(*self._poly[index])
